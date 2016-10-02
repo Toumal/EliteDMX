@@ -4,7 +4,7 @@ EliteDMX Light and Effects Control
 This program works with cheap and ubiquitous DMX512-compatible USB interfaces (Enttec, etc). It reads the new "player log" file created by Elite Dangerous v1.7/v2.2 and higher, and allows you to script various DMX effects for the events happening in the game. In the simplest form, it can be used to control one or more DMX-compatible RGB stage/studio lights (which can be found on Ebay for as little as $30, search for "LED PAR DMX").
 In a more complete setup you might include laser effects, strobes, and even smoke machines.
 
-[![EliteDMX v0.1 Damage events test](http://img.youtube.com/vi/1qs1zQLBQjE/0.jpg)](http://www.youtube.com/watch?v=1qs1zQLBQjE "EliteDMX v0.1 Damage events test")
+[![EliteDMX v0.1 Damage events test](http://i.imgur.com/WFUpJfL.jpg)](http://www.youtube.com/watch?v=1qs1zQLBQjE "EliteDMX v0.1 Damage events test")
 
 Installation
 ------------
