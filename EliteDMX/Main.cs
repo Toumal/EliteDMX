@@ -19,7 +19,7 @@ namespace EliteDMX
     public partial class Main : Form
     {
         private static AddedContentReader _continuousFileReader = null;
-        public static DMX DmxInterface;
+        public static DMX DmxInterface = null;
 
         public Main()
         {
@@ -38,7 +38,6 @@ namespace EliteDMX
                 if (OpenDMX.status == FT_STATUS.FT_DEVICE_NOT_FOUND)       //update status
                 {
                     toolStripStatusLabel1.Text = "No USB Device Found";
-                    DmxInterface = new VellemanDMX();
                 }
                 else if (OpenDMX.status == FT_STATUS.FT_OK)
                 {
@@ -48,15 +47,20 @@ namespace EliteDMX
                 else
                 {
                     toolStripStatusLabel1.Text = "Error Opening Device";
-                    DmxInterface = new VellemanDMX();
                 }
             }
             catch (Exception exp)
             {
                 Console.WriteLine(exp);
                 toolStripStatusLabel1.Text = "Error Connecting to USB Device";
-
             }
+
+            if (DmxInterface == null)
+            {
+                DmxInterface = new VellemanDMX();
+            }
+
+
         }
 
         private void btnOff_Click(object sender, EventArgs e)
