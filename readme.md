@@ -50,13 +50,13 @@ To script light animations use the following command:
 
 * animationType is one of the following:
 
-animation_type_fixedvalue = 0
-animation_type_ramp_up = 1
-animation_type_ramp_down = 2
-animation_type_ramp_updown = 3
-animation_type_randomize = 4
-animation_type_flash = 5
-animation_type_randomflash = 6
+    animation_type_fixedvalue = 0
+    animation_type_ramp_up = 1
+    animation_type_ramp_down = 2
+    animation_type_ramp_updown = 3
+    animation_type_randomize = 4
+    animation_type_flash = 5
+    animation_type_randomflash = 6
 
 Currently, only fixedvalue, ramp_up, ramp_down and randomflash are implemented.
 
