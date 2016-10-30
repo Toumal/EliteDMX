@@ -1,10 +1,4 @@
-﻿//Linked2 Software (www.Linked2Software.com) Building Lighting Control Systems
-//DMX-512 Test Application Visual Studio 2012 C#
-//Written by Richard A. Blackwell with example source provided by Enttec.com
-//
-//This example uses only 3 channels by default which works fine with many simple RGB Lamps.
-//
-using System;
+﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
@@ -34,7 +28,7 @@ namespace EliteDMX
                 filethread.IsBackground = true;
                 filethread.Start();
 
-                OpenDMX.start();                                            //find and connect to devive (first found if multiple)
+                OpenDMX.init();                                            //find and connect to devive (first found if multiple)
                 if (OpenDMX.status == FT_STATUS.FT_DEVICE_NOT_FOUND)       //update status
                 {
                     toolStripStatusLabel1.Text = "No USB Device Found";
@@ -43,6 +37,7 @@ namespace EliteDMX
                 {
                     toolStripStatusLabel1.Text = "Found DMX on USB";
                     DmxInterface = new OpenDMX();
+                    DmxInterface.startWriteThread();
                 }
                 else
                 {
@@ -58,6 +53,7 @@ namespace EliteDMX
             if (DmxInterface == null)
             {
                 DmxInterface = new VellemanDMX();
+                VellemanDMX.SetChannelCount(256);
             }
 
 
@@ -69,10 +65,10 @@ namespace EliteDMX
                 toolStripStatusLabel1.Text = "No Enttec USB Device Found";
             else
                 toolStripStatusLabel1.Text = "Found DMX on USB";
-            DmxInterface.setDmxValue(1, 0);
-            DmxInterface.setDmxValue(2, 0);
-            DmxInterface.setDmxValue(3, 0);
-            DmxInterface.writeData();
+            for (int i = 1; i < 255; i++)
+            {
+                DmxInterface.setDmxValue(i, 0);
+            }
 
         }
 
@@ -82,10 +78,13 @@ namespace EliteDMX
                 toolStripStatusLabel1.Text = "No Enttec USB Device Found";
             else
                 toolStripStatusLabel1.Text = "Found DMX on USB";
-            DmxInterface.setDmxValue(1, 255);
-            DmxInterface.setDmxValue(2, 255);
-            DmxInterface.setDmxValue(3, 255);
-            DmxInterface.writeData();
+            for (int i = 1; i < 255; i++) { 
+                DmxInterface.setDmxValue(i, 255);
+            }
+            for (int i = 1; i < 255; i++)
+            {
+                DmxInterface.setDmxValue(i, 255);
+            }
 
         }
 
@@ -97,7 +96,6 @@ namespace EliteDMX
             else
                 toolStripStatusLabel1.Text = "Found DMX on USB";
             DmxInterface.setDmxValue(Convert.ToInt16(txtChannel1.Text), Convert.ToByte(txtLevel1.Text));
-            DmxInterface.writeData();
 
         }
 
@@ -108,7 +106,6 @@ namespace EliteDMX
             else
                 toolStripStatusLabel1.Text = "Found DMX on USB";
             DmxInterface.setDmxValue(Convert.ToInt16(txtChannel2.Text), Convert.ToByte(txtLevel2.Text));
-            DmxInterface.writeData();
 
         }
 
@@ -119,7 +116,6 @@ namespace EliteDMX
             else
                 toolStripStatusLabel1.Text = "Found DMX on USB";
             DmxInterface.setDmxValue(Convert.ToInt16(txtChannel3.Text), Convert.ToByte(txtLevel3.Text));
-            DmxInterface.writeData();
         }
 
 
@@ -164,8 +160,8 @@ namespace EliteDMX
             long lastUpdate = 0;
             while (true)
             {
+                Thread.Yield();
                 long milliseconds = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-//                Thread.Yield();
                 if (milliseconds - lastUpdate > 5)
                 {
                     lastUpdate = milliseconds;
@@ -195,7 +191,6 @@ namespace EliteDMX
 
         private static void UpdateAnimations(Lua scriptState, LuaFunction animationHandler)
         {
-            //animationHandler.Call();
             Animation.HandleAnimations(DmxInterface);
 
         }
@@ -303,7 +298,6 @@ namespace EliteDMX
 
         public static void HandleAnimations(DMX DmxInterface)
         {
-            bool dmxModified = false;
             foreach (AnimationEntry a in animations)
             {
                 if (a.delay == 0 && a.repeatCount != 0)
@@ -311,13 +305,11 @@ namespace EliteDMX
                     if (a.animationType == ANIMATION_TYPE_FIXEDVALUE)
                     {
                         DmxInterface.setDmxValue(a.animationDmxChannel, Convert.ToByte(a.currentValue));
-                        dmxModified = true;
                         a.repeatCount = 0;
                     }
                     if (a.animationType == ANIMATION_TYPE_RAMP_UP)
                     {
                         a.currentValue = a.currentValue + a.stepValue;
-                        dmxModified = true;
                         if (a.currentValue > a.endValue)
                         {
                             DmxInterface.setDmxValue(a.animationDmxChannel, Convert.ToByte(a.endValue));
@@ -340,7 +332,6 @@ namespace EliteDMX
                     if (a.animationType == ANIMATION_TYPE_RAMP_DOWN)
                     {
                         a.currentValue = a.currentValue - a.stepValue;
-                        dmxModified = true;
                         if (a.currentValue < a.endValue)
                         {
                             DmxInterface.setDmxValue(a.animationDmxChannel, Convert.ToByte(a.endValue));
@@ -365,12 +356,10 @@ namespace EliteDMX
                         if (a.currentValue > a.endValue - (a.stepValue * 2))
                         {
                             DmxInterface.setDmxValue(a.animationDmxChannel, 255);
-                            dmxModified = true;
                         }
                         if (a.currentValue > a.endValue - a.stepValue)
                         {
                             DmxInterface.setDmxValue(a.animationDmxChannel, 0);
-                            dmxModified = true;
                             if (a.repeatCount > 0)
                             {
                                 a.repeatCount = a.repeatCount - 1;
@@ -387,10 +376,6 @@ namespace EliteDMX
                 {
                     a.delay--;
                 }
-            }
-            if (dmxModified == true)
-            {
-                DmxInterface.writeData();
             }
 
         }
@@ -412,7 +397,7 @@ namespace EliteDMX
             VellemanDMX.SetData((uint)channel, value);
         }
 
-        public void writeData()
+        public void startWriteThread()
         {
         }
     }
@@ -421,7 +406,7 @@ namespace EliteDMX
     public interface DMX
     {
         void setDmxValue(int channel, byte value);
-        void writeData();
+        void startWriteThread();
     }
 
     public class OpenDMX : DMX
@@ -472,48 +457,54 @@ namespace EliteDMX
         public static extern FT_STATUS FT_SetDivisor(uint ftHandle, char usDivisor);
 
 
-        public static void start()
+        public static void init()
         {
             handle = 0;
             status = FT_Open(0, ref handle);
-                //setting up the WriteData method to be on it's own thread. This will also turn all channels off
-                //this unrequested change of state can be managed by getting the current state of all channels 
-                //into the write buffer before calling this function.
-//            Thread thread = new Thread(new ThreadStart(writeData));
-//            thread.Start();
+            //setting up the WriteData method to be on it's own thread. This will also turn all channels off
+            //this unrequested change of state can be managed by getting the current state of all channels 
+            //into the write buffer before calling this function.
+            initOpenDMX();
         }
 
+        public void startWriteThread()
+        {
+            Thread thread = new Thread(new ThreadStart(writeData));
+            thread.IsBackground = true;
+            thread.Start();
+        }
 
 
 
         public void setDmxValue(int channel, byte value)
         {
-            if (buffer != null)
+            if (buffer == null)
             {
-                buffer[channel ] = value;
+                buffer = new byte[513];
             }
+            buffer[channel] = value;
         }
 
         public void writeData()
         {
+            while (!done)
+            {
                 try
                 {
-                    initOpenDMX();
-                    if (OpenDMX.status == FT_STATUS.FT_OK)
+                    if (OpenDMX.status == FT_STATUS.FT_OK && buffer != null)
                     {
                         status = FT_SetBreakOn(handle);
                         status = FT_SetBreakOff(handle);
                         bytesWritten = write(handle, buffer, buffer.Length);
-
-                        Thread.Sleep(10);      //give the system time to send the data before sending more 
-                        
+                        Thread.Sleep(25); ;      //give the system time to send the data before sending more 
                     }
+                    Thread.Yield();
                 }
                 catch (Exception exp)
                 {
                     Console.WriteLine(exp);
                 }
-
+            }
         }
 
         public static int write(uint handle, byte[] data, int length)

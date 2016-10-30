@@ -53,9 +53,9 @@ function EffectsHandler ()
 	end
 	if (json.event == "DockingGranted") then
 		-- light1 blinking green
-		for i=0,8000,80 do
+		for i=0,16000,160 do
 			Animation.StartAnimation(effect_sequence_docking, light1_g, animation_type_fixedvalue, 255, 0, 0, 1, i)
-			Animation.StartAnimation(effect_sequence_docking, light1_g, animation_type_fixedvalue, 0, 0, 0, 1, i+40)
+			Animation.StartAnimation(effect_sequence_docking, light1_g, animation_type_fixedvalue, 0, 0, 0, 1, i+80)
 		end
 	end
 	if (json.event == "Docked") then
@@ -143,25 +143,25 @@ function EffectsHandler ()
 	if (json.event == "HeatWarning") then
 		Animation.StopAnimation(effect_sequence_heatwarning)
 		-- light1 blinking red
-		for i=0,200,20 do
+		for i=0,400,40 do
 			Animation.StartAnimation(effect_sequence_hulldamage, light1_r, animation_type_fixedvalue, 255, 0, 0, 1, i)
-			Animation.StartAnimation(effect_sequence_hulldamage, light1_r, animation_type_fixedvalue, 0, 0, 0, 1, i+10)
+			Animation.StartAnimation(effect_sequence_hulldamage, light1_r, animation_type_fixedvalue, 0, 0, 0, 1, i+20)
 		end
 	end
 	if (json.event == "LaunchFighter" or json.event == "DockFighter") then
 		-- light1 blinking yellow
-		for i=0,400,40 do
+		for i=0,800,80 do
 			Animation.StartAnimation(effect_sequence_launchfighter, light1_r, animation_type_fixedvalue, 255, 0, 0, 1, i)
-			Animation.StartAnimation(effect_sequence_launchfighter, light1_r, animation_type_fixedvalue, 0, 0, 0, 1, i+20)
+			Animation.StartAnimation(effect_sequence_launchfighter, light1_r, animation_type_fixedvalue, 0, 0, 0, 1, i+40)
 			Animation.StartAnimation(effect_sequence_launchfighter, light1_g, animation_type_fixedvalue, 255, 0, 0, 1, i)
-			Animation.StartAnimation(effect_sequence_launchfighter, light1_g, animation_type_fixedvalue, 0, 0, 0, 1, i+20)
+			Animation.StartAnimation(effect_sequence_launchfighter, light1_g, animation_type_fixedvalue, 0, 0, 0, 1, i+40)
 		end
 		-- light2 blinking yellow with offset
-		for i=0,400,40 do
+		for i=0,800,80 do
 			Animation.StartAnimation(effect_sequence_launchfighter, light2_r, animation_type_fixedvalue, 255, 0, 0, 1, i+4)
-			Animation.StartAnimation(effect_sequence_launchfighter, light2_r, animation_type_fixedvalue, 0, 0, 0, 1, i+24)
+			Animation.StartAnimation(effect_sequence_launchfighter, light2_r, animation_type_fixedvalue, 0, 0, 0, 1, i+44)
 			Animation.StartAnimation(effect_sequence_launchfighter, light2_g, animation_type_fixedvalue, 255, 0, 0, 1, i+4)
-			Animation.StartAnimation(effect_sequence_launchfighter, light2_g, animation_type_fixedvalue, 0, 0, 0, 1, i+24)
+			Animation.StartAnimation(effect_sequence_launchfighter, light2_g, animation_type_fixedvalue, 0, 0, 0, 1, i+44)
 		end
 		Animation.StartAnimation(effect_sequence_launchsrv, light1_r, animation_type_fixedvalue, 0, 0, 0, 1, 500)
 		Animation.StartAnimation(effect_sequence_launchsrv, light1_g, animation_type_fixedvalue, 0, 0, 0, 1, 500)
@@ -170,18 +170,18 @@ function EffectsHandler ()
 	end
 	if (json.event == "LaunchSRV" or json.event == "DockSRV") then
 		-- light1 blinking yellow
-		for i=0,400,40 do
+		for i=0,800,80 do
 			Animation.StartAnimation(effect_sequence_launchsrv, light1_r, animation_type_fixedvalue, 255, 0, 0, 1, i)
-			Animation.StartAnimation(effect_sequence_launchsrv, light1_r, animation_type_fixedvalue, 0, 0, 0, 1, i+20)
+			Animation.StartAnimation(effect_sequence_launchsrv, light1_r, animation_type_fixedvalue, 0, 0, 0, 1, i+40)
 			Animation.StartAnimation(effect_sequence_launchsrv, light1_g, animation_type_fixedvalue, 255, 0, 0, 1, i)
-			Animation.StartAnimation(effect_sequence_launchsrv, light1_g, animation_type_fixedvalue, 0, 0, 0, 1, i+20)
+			Animation.StartAnimation(effect_sequence_launchsrv, light1_g, animation_type_fixedvalue, 0, 0, 0, 1, i+40)
 		end
 		-- light2 blinking yellow with offset
-		for i=0,400,40 do
+		for i=0,800,80 do
 			Animation.StartAnimation(effect_sequence_launchsrv, light2_r, animation_type_fixedvalue, 255, 0, 0, 1, i+4)
-			Animation.StartAnimation(effect_sequence_launchsrv, light2_r, animation_type_fixedvalue, 0, 0, 0, 1, i+24)
+			Animation.StartAnimation(effect_sequence_launchsrv, light2_r, animation_type_fixedvalue, 0, 0, 0, 1, i+44)
 			Animation.StartAnimation(effect_sequence_launchsrv, light2_g, animation_type_fixedvalue, 255, 0, 0, 1, i+4)
-			Animation.StartAnimation(effect_sequence_launchsrv, light2_g, animation_type_fixedvalue, 0, 0, 0, 1, i+24)
+			Animation.StartAnimation(effect_sequence_launchsrv, light2_g, animation_type_fixedvalue, 0, 0, 0, 1, i+44)
 		end
 		Animation.StartAnimation(effect_sequence_launchsrv, light1_r, animation_type_fixedvalue, 0, 0, 0, 1, 500)
 		Animation.StartAnimation(effect_sequence_launchsrv, light1_g, animation_type_fixedvalue, 0, 0, 0, 1, 500)
@@ -191,9 +191,9 @@ function EffectsHandler ()
 	if (json.event == "EjectCargo") then
 		Animation.StopAnimation(effect_sequence_ejectcargo)
 		-- light1 blinking blue quickly
-		for i=0,100,20 do
+		for i=0,400,80 do
 			Animation.StartAnimation(effect_sequence_hulldamage, light1_r, animation_type_fixedvalue, 255, 0, 0, 1, i)
-			Animation.StartAnimation(effect_sequence_hulldamage, light1_r, animation_type_fixedvalue, 0, 0, 0, 1, i+10)
+			Animation.StartAnimation(effect_sequence_hulldamage, light1_r, animation_type_fixedvalue, 0, 0, 0, 1, i+20)
 		end
 	end
 	if (json.event == "MiningRefined") then
@@ -212,31 +212,29 @@ function EffectsHandler ()
 	if (json.event == "HullDamage") then
 		Animation.StopAnimation(effect_sequence_hulldamage)
 		-- light2 flashing randomly for a bit
-		for i=0,80,3 do
+		for i=0,160,3 do
 			rand = math.random(200, 255);
 			Animation.StartAnimation(effect_sequence_hulldamage, light2_r, animation_type_randomflash, rand, 255, 10, 1, i)
 			Animation.StartAnimation(effect_sequence_hulldamage, light2_g, animation_type_randomflash, rand, 255, 10, 1, i)
 			Animation.StartAnimation(effect_sequence_hulldamage, light2_b, animation_type_randomflash, rand, 255, 10, 1, i)
 		end
 		-- light1 blinking red
-		for i=0,1600,40 do
+		for i=0,1600,80 do
 			Animation.StartAnimation(effect_sequence_hulldamage, light1_r, animation_type_fixedvalue, 255, 0, 0, 1, i)
 			Animation.StartAnimation(effect_sequence_hulldamage, light1_r, animation_type_fixedvalue, 0, 0, 0, 1, i+20)
 		end
 		-- smoke1 enable
 		Animation.StartAnimation(effect_sequence_hulldamage, smoke1, animation_type_fixedvalue, 255, 0, 0, 1, 0) -- smoke on
-		Animation.StartAnimation(effect_sequence_hulldamage, smoke1, animation_type_fixedvalue, 0, 0, 0, 1, 200) -- smoke off
-		Animation.StartAnimation(effect_sequence_hulldamage, smoke1, animation_type_fixedvalue, 0, 0, 0, 1, 250) -- repeat to ensure smoke off (sometimes DMX commmands are skipped for some reason)
-		Animation.StartAnimation(effect_sequence_hulldamage, smoke1, animation_type_fixedvalue, 0, 0, 0, 1, 300) -- repeat to ensure smoke off (sometimes DMX commmands are skipped for some reason)
+		Animation.StartAnimation(effect_sequence_hulldamage, smoke1, animation_type_fixedvalue, 0, 0, 0, 1, 500) -- smoke off
 	end
 	if (json.event == "Interdicted") then
 		Animation.StopAnimation(effect_sequence_interdicted)
 		--light1 blinking yellow
-		for i=0,400,40 do
+		for i=0,800,80 do
 			Animation.StartAnimation(effect_sequence_hulldamage, light1_r, animation_type_fixedvalue, 255, 0, 0, 1, i)
-			Animation.StartAnimation(effect_sequence_hulldamage, light1_r, animation_type_fixedvalue, 0, 0, 0, 1, i+20)
+			Animation.StartAnimation(effect_sequence_hulldamage, light1_r, animation_type_fixedvalue, 0, 0, 0, 1, i+40)
 			Animation.StartAnimation(effect_sequence_hulldamage, light1_g, animation_type_fixedvalue, 255, 0, 0, 1, i)
-			Animation.StartAnimation(effect_sequence_hulldamage, light1_g, animation_type_fixedvalue, 0, 0, 0, 1, i+20)
+			Animation.StartAnimation(effect_sequence_hulldamage, light1_g, animation_type_fixedvalue, 0, 0, 0, 1, i+40)
 		end
 	end
 
